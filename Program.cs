@@ -1,5 +1,4 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using System.Dynamic;
 
 namespace InventoryManagement
 {
@@ -8,10 +7,10 @@ namespace InventoryManagement
     {
 
         private readonly string _name;
-        private int _quantity;
+        private int _quantity { get; }
         private DateTime _dateCreated;
 
-        Item(string name, int quantity, DateTime? date = null)
+        public Item(string name, int quantity, DateTime? date = null)
         {
             _name = name;
             _quantity = quantity >= 0 ? quantity : throw new Exception("Invalid. quantity cannot be negative!");
@@ -22,6 +21,10 @@ namespace InventoryManagement
         {
             return _name;
         }
+        public int GetQuantity()
+        {
+            return _quantity;
+        }
     }
 
     public class Store
@@ -29,27 +32,30 @@ namespace InventoryManagement
 
         private List<Item> _items = new List<Item>();
 
-        bool AddItem(Item item)
+        public bool AddItem(Item item)
         {
             if (FindItemByName(item.GetName()) == null) return false;
             _items.Add(item);
             return true;
         }
 
-        bool RemoveItem(Item item)
+        public bool RemoveItem(Item item)
         {
             if (FindItemByName(item.GetName()) == null) return false;
             _items.Remove(item);
             return true;
         }
 
-
-        Item FindItemByName(string name)
+        public int GetCurrentVolume()
+        {
+            return _items.Sum(item => item.GetQuantity()); ;
+        }
+        public Item FindItemByName(string name)
         {
             return _items.Find(item => item.GetName().ToUpper().Equals(name.ToUpper()));
         }
 
-        void SortByNameAsc()
+        public void SortByNameAsc()
         {
             _items.OrderBy(item => item.GetName().ToUpper());
         }
