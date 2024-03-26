@@ -1,71 +1,69 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-namespace InventoryManagement
+using System.Net.WebSockets;
+
+namespace InventoryManagement;
+
+public class InventoryManagement
 {
-
-    public class Item
+    public static void Main(string[] args)
     {
+        // items example - You do not need to follow exactly the same
+        var waterBottle = new Item("Water Bottle", 10, new DateTime(2023, 1, 1));
+        var chocolateBar = new Item("Chocolate Bar", 15, new DateTime(2023, 2, 1));
+        var notebook = new Item("Notebook", 5, new DateTime(2023, 3, 1));
+        var pen = new Item("Pen", 20, new DateTime(2023, 4, 1));
+        var tissuePack = new Item("Tissue Pack", 30, new DateTime(2023, 5, 1));
+        var chipsBag = new Item("Chips Bag", 25, new DateTime(2023, 6, 1));
+        var sodaCan = new Item("Soda Can", 8, new DateTime(2023, 7, 1));
+        var soap = new Item("Soap", 12, new DateTime(2023, 8, 1));
+        var shampoo = new Item("Shampoo", 40, new DateTime(2023, 9, 1));
+        var toothbrush = new Item("Toothbrush", 50, new DateTime(2023, 10, 1));
+        var coffee = new Item("Coffee", 20);
+        var sandwich = new Item("Sandwich", 15);
+        var batteries = new Item("Batteries", 10);
+        var umbrella = new Item("Umbrella", 5);
+        var sunscreen = new Item("Sunscreen", 8);
 
-        private readonly string _name;
-        private int _quantity { get; }
-        private DateTime _dateCreated;
+        // method invocation example - You do not need to follow exactly the same
+        Store store = new Store(300);
+        // ... add all items to the store
+        store.AddItem(waterBottle);
+        store.AddItem(chocolateBar);
+        store.AddItem(notebook);
+        store.AddItem(pen);
+        store.AddItem(tissuePack);
+        store.AddItem(chipsBag);
+        store.AddItem(sodaCan);
+        store.AddItem(soap);
+        store.AddItem(shampoo);
+        store.AddItem(toothbrush);
+        store.AddItem(coffee);
+        store.AddItem(sandwich);
+        store.AddItem(batteries);
+        store.AddItem(umbrella);
+        store.AddItem(sunscreen);
 
-        public Item(string name, int quantity, DateTime? date = null)
+        store.SortByDate(SortOrder.DESC);
+        // print all items
+        foreach (Item item in store.Items)
         {
-            _name = name;
-            _quantity = quantity >= 0 ? quantity : throw new Exception("Invalid. quantity cannot be negative!");
-            _dateCreated = date ?? DateTime.Now;
+            Console.WriteLine(item.ToString());
         }
 
-        public string GetName()
+        (List<Item> newArrivals, List<Item> oldItems) = store.GroupByDate();
+
+        Console.WriteLine($"\nNew Arrival Items:");
+        foreach (Item item in newArrivals)
         {
-            return _name;
+            Console.WriteLine(item.ToString());
         }
-        public int GetQuantity()
+
+        Console.WriteLine($"\nold Items:");
+        foreach (Item item in oldItems)
         {
-            return _quantity;
-        }
-    }
-
-    public class Store
-    {
-
-        private List<Item> _items = new List<Item>();
-        private int _maximumCapacity;
-
-        public Store(int capacity){
-            _maximumCapacity = capacity;
+            Console.WriteLine(item.ToString());
         }
 
-        public bool AddItem(Item item)
-        {
-            if (FindItemByName(item.GetName()) == null) return false;
-            
-            if (_items.Count == _maximumCapacity) return false;
-
-            _items.Add(item);
-            return true;
-        }
-
-        public bool RemoveItem(Item item)
-        {
-            if (FindItemByName(item.GetName()) == null) return false;
-            _items.Remove(item);
-            return true;
-        }
-
-        public int GetCurrentVolume()
-        {
-            return _items.Sum(item => item.GetQuantity()); ;
-        }
-        public Item FindItemByName(string name)
-        {
-            return _items.Find(item => item.GetName().ToUpper().Equals(name.ToUpper()));
-        }
-
-        public void SortByNameAsc()
-        {
-            _items.OrderBy(item => item.GetName().ToUpper());
-        }
     }
 }
