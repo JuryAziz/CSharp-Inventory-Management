@@ -31,10 +31,18 @@ namespace InventoryManagement
     {
 
         private List<Item> _items = new List<Item>();
+        private int _maximumCapacity;
+
+        public Store(int capacity){
+            _maximumCapacity = capacity;
+        }
 
         public bool AddItem(Item item)
         {
             if (FindItemByName(item.GetName()) == null) return false;
+            
+            if (_items.Count == _maximumCapacity) return false;
+
             _items.Add(item);
             return true;
         }
