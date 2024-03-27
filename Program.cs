@@ -1,8 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using System.Net.WebSockets;
-
-namespace InventoryManagement;
+﻿namespace InventoryManagement;
 
 public class InventoryManagement
 {

@@ -1,5 +1,3 @@
-using InventoryManagement;
-
 public enum SortOrder
 {
     NONE = 0,
@@ -9,7 +7,6 @@ public enum SortOrder
 
 public class Store
 {
-
     private List<Item> _items = new List<Item>();
     public List<Item> Items { get { return _items; } }
 
