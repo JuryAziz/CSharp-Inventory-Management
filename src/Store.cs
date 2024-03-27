@@ -1,4 +1,5 @@
 using InventoryManagement;
+
 public enum SortOrder
 {
     NONE = 0,
@@ -11,6 +12,7 @@ public class Store
 
     private List<Item> _items = new List<Item>();
     public List<Item> Items { get { return _items; } }
+
     private int _maximumCapacity;
 
     public Store(int capacity)
@@ -20,10 +22,10 @@ public class Store
 
     public bool AddItem(Item item)
     {
-
         if (FindItemByName(item.Name) != null) return false;
 
-        if (_items.Count == _maximumCapacity) return false;
+        // the current + the new item quantity should not exceed the maximum capacity
+        if (GetCurrentVolume() + item.Quantity >= _maximumCapacity) return false;
 
         _items.Add(item);
         return true;
@@ -40,6 +42,7 @@ public class Store
     {
         return _items.Sum(item => item.Quantity); ;
     }
+
     public Item? FindItemByName(string name)
     {
         return _items.Find(item => item.Name.ToUpper().Equals(name.ToUpper()));

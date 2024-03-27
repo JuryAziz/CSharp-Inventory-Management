@@ -3,8 +3,10 @@ public class Item
 
     private readonly string _name;
     public string Name { get { return _name; } }
+
     private int _quantity;
     public int Quantity { get { return _quantity; } }
+
     private DateTime _dateCreated;
     public DateTime DateCreated { get { return _dateCreated; } }
 
